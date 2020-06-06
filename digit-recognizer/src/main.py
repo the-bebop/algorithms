@@ -1,5 +1,6 @@
 import os
 import acquisition as acq
+import classifier
 
 def get_config(with_verbose) -> dict:
     
@@ -30,6 +31,13 @@ def main():
 
     if config["verbose"]["enabled"]:
         acq.show_data(X, config["verbose"]["sample_timeout"])
+
+    algo = classifier.Classifier()
+    algo.train(X, y)
+    
+    y, X = acq.extract_data(config["paths"]["train"])
+    estimates = algo.test(X)
+    algo.eval(estimates, y)
 
 if __name__ == "__main__":
     main()
