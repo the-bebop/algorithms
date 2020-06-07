@@ -1,4 +1,4 @@
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis as QDA
+from sklearn.ensemble import RandomForestClassifier
 from time import time
 import numpy as np
 
@@ -8,7 +8,26 @@ import acquisition
 class Classifier:
     def __init__(self):
         self.classifier = None
+        self.class_samples = None
     
+    def get_comparables(self, X=None, y=None):        
+        class_samples = {}
+        # start with class independend container
+        for cur_class in set(y):
+            class_samples.update({cur_class: []})
+
+        # get digit samples
+        for cur_sample, cur_y in zip(X, y):
+            class_samples[cur_y].append(cur_sample)
+
+        # create average class appearance(s)
+        for key in class_samples.keys():
+            cur_class_stack = np.asarray(class_samples[key])
+            comparable = [np.median(cur_class_stack[:, pixel]) for pixel in range(cur_class_stack[0].shape[0])]
+            class_samples[key] = np.array(comparable)
+
+        self.class_samples = class_samples
+
     def extract_features(self, X=None):
         
         #TODO replace with logging
@@ -18,9 +37,10 @@ class Classifier:
         for x in X:
             x = acquisition.convert_to_img(x) # so unnecessary
             feature_vector = []
-            feature_vector.extend( processing.corner_signature(x).flatten() )
-            feature_vector.extend( processing.part_occupancy(x, 7) )
-            feature_vector.extend( x.flatten() )
+            #feature_vector.extend( processing.corner_signature(x).flatten() )
+            #feature_vector.extend( processing.part_occupancy(x, 7) )
+            #feature_vector.extend( x.flatten() )
+            feature_vector.extend(  processing.class_correlation(x, self.class_samples))
 
             feature_set.append(np.asarray(feature_vector))
         
@@ -35,7 +55,8 @@ class Classifier:
         #TODO replace with logging
         print("- Start - Training")
         start_time = time()
-        self.classifier = QDA()
+        x = self.get_comparables(X, y)
+        self.classifier = RandomForestClassifier()
         X = self.extract_features(X)
         self.classifier.fit(X, y)        
         #TODO replace with logging
@@ -77,3 +98,24 @@ class Classifier:
             print(" |")
         print(" -----------------------")
         
+        results = {"confusion_matrix": confusion_matrix, "classes": {}}
+        for cur_class in range(label_amount):        
+            TP = TN = FP = FN = 0
+            TP = confusion_matrix[cur_class, cur_class]
+            FP = sum(confusion_matrix[cur_class,:]) - TP
+            FN = sum(confusion_matrix[:,cur_class]) - TP
+            TN = sum(confusion_matrix) - TP - FP - FN
+            class_results = {"TP": TP, "TN": TN, "FP": FP, "FN": FN}
+
+            precision = class_results["TP"]/(class_results["TP"] + class_results["FP"])
+            recall = precision = class_results["TP"]/(class_results["TP"] + class_results["FN"])
+            metric_results = {"precision": precision, "recall": recall}
+            results["classes"].update({cur_class: {"details": class_results, "metrics": metric_results}})
+
+
+        # evaluation
+        for cur_class in results["classes"].keys():
+            print("Class {}: precision {}, recall {}.".format(  cur_class,
+                                                                results["classes"][cur_class]["metrics"]["precision"], 
+                                                                results["classes"][cur_class]["metrics"]["recall"])
+                                                                )

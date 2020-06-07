@@ -20,24 +20,27 @@ def get_config(with_verbose) -> dict:
     verbose_config = {"verbose":{"enabled": with_verbose, "sample_timeout":3000}}
     config.update(verbose_config)
 
+    #training
+    training_config = {"training": {"dataset_folds": 0.75}}
+    config.update(training_config)
+
     return config
 
 
 def main():
-    verbose = True
+    verbose = False
 
     config = get_config(verbose)
-    y, X = acq.extract_data(config["paths"]["train"])
+    train_data, test_data = acq.extract_data(config["paths"]["train"], config["training"]["dataset_folds"])
 
     if config["verbose"]["enabled"]:
-        acq.show_data(X, config["verbose"]["sample_timeout"])
+        acq.show_data(train_data[0], config["verbose"]["sample_timeout"])
 
     algo = classifier.Classifier()
-    algo.train(X, y)
+    algo.train(train_data[0], train_data[1])
     
-    y, X = acq.extract_data(config["paths"]["train"])
-    estimates = algo.test(X)
-    algo.eval(estimates, y)
+    estimates = algo.test(test_data[0])
+    algo.eval(estimates, test_data[1])
 
 if __name__ == "__main__":
     main()

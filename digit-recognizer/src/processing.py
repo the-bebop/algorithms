@@ -2,6 +2,7 @@
 import cv2
 import numpy as np
 from statistics import median
+from scipy.stats import pearsonr
 
 def corner_signature(x=None, harris_block_size=3, harris_ksize=5, harris_k=0.025):
     if not isinstance(x, np.ndarray):
@@ -19,6 +20,17 @@ def part_occupancy(x, no_of_parts):
     flat_sample = x.flatten()
     return [median(flat_sample[pixel:pixel + step]) for pixel in range(0,one_dim*one_dim, step)]
 
+def class_correlation(x, comparables):
+
+    ret_vec = []
+
+    for key in comparables.keys():
+        comparable = comparables[key]
+        corr, p_value = pearsonr(x.flatten(), comparable)
+        ret_vec.append(corr)
+        ret_vec.append(p_value)
+
+    return ret_vec
 
 
 
