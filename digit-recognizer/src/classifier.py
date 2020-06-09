@@ -10,7 +10,17 @@ class Classifier:
         self.classifier = None
         self.class_samples = None
     
-    def get_comparables(self, X=None, y=None):        
+    def get_comparables(self, X=None, y=None):
+        """
+        Takes the database and generates one image per class with the overal appearance of its category. This is used for feature extraction.
+
+        Args:
+            X:  database to extract the image samples from.
+            y:  labels for categorization.
+            --> X & y sample relation is connected via their position (i.e. X[n] belongs to y[n], where n is an arbitrary existing sample ID)        
+        Returns:
+            [numpy 2D array with training samples, numpy 1D array with training labels, numpy 2D array with testing samples, numpy 2D array with testing labels.]
+        """ 
         class_samples = {}
         # start with class independend container
         for cur_class in set(y):
@@ -29,7 +39,14 @@ class Classifier:
         self.class_samples = class_samples
 
     def extract_features(self, X=None):
-        
+        """
+        Represents the feature extraction pipeline for an identical training and testing.
+
+        Args:
+            X:  the raw dataset (train or test) to process
+        Returns:
+            The featureset related to the given input dataset
+        """
         #TODO replace with logging
         print("- Start - Extracting features")
         start_time = time()
@@ -49,6 +66,15 @@ class Classifier:
         return np.asarray(feature_set)
 
     def train(self, X=None, y=None):
+        """
+        Represents the classifier's training pipeline.
+
+        Args:
+            X: the raw trainingset
+            y: the related training labels
+        Raises:
+            ValueError 
+        """
         if X is None or y is None:
             raise ValueError("Missing Training information.")
         
@@ -63,6 +89,17 @@ class Classifier:
         print("- End - Training, took {} s".format(time() - start_time))
 
     def test(self, X=None):
+        """
+        Represents the classifier's training pipeline.
+
+        Args:
+            X: the raw testset
+            y: the related training labels
+        Raises:
+            ValueError 
+        Returns:
+            the estimate_set related to the input dataset
+        """
         if X is None:
             raise ValueError("Missing testing data")
         if self.classifier is None:
@@ -76,7 +113,20 @@ class Classifier:
         print("- End - Testing, took {} s".format(time() - start_time))
         return self.classifier.predict(X)
 
-    def eval(self, estimates=None, ground_truth=None):
+    def eval(self, estimates=None, ground_truth=None):      
+        """
+        Represents the evaluation pipeline that compares the classifier's estimate with the actual ground truth.
+
+        Prints:
+        - confusion matrix
+        - classification metrics
+
+        Args:
+            estimates:      the estimateset generated from Classifier::test()
+            ground_truth:   the comparison labels from the dataset
+        Raises:
+            ValueError 
+        """
         if self.classifier is None:
             raise ValueError("Won't work with a flaky classifier")
         if not isinstance(estimates, np.ndarray) or len(estimates) < 1:

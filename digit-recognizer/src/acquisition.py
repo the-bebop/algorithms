@@ -6,16 +6,29 @@ import pandas as pd
 
 import processing
 
-def extract_data(csv_path, dataset_folds):
+def extract_data(csv_path=None, trainset_percentage=0.8):
+    """
+    Extracts the MNIST data and converts it into processible data types. Also splits that database according to the specified percentage.
 
-    if dataset_folds <= 0 or dataset_folds >1:
-        raise ValueError("dataset_folds needs to be within 0 ... 1")
+    Args:
+        csv_path:               path to the MNIST database.
+        trainset_percentage:    percentag that defines how many of the first sample shall be used for the trainset, the remaining are used for the testset. No evalset is generated.
+    Raises:
+        IOError
+        ValueError 
+    Returns:
+        [numpy 2D array with training samples, numpy 1D array with training labels, numpy 2D array with testing samples, numpy 2D array with testing labels.]
+    """
+
+    if csv_path is None:
+        raise IOError("No path to MNIST databse specified.")
+    if trainset_percentage <= 0 or trainset_percentage >1:
+        raise ValueError("Relation between train- and testset samples needs to be within 0 ... 1.")
     cur_asset = pd.read_csv(csv_path)
     labels = cur_asset["label"]
     data = cur_asset.drop("label", axis=1)
     
-    no_of_samples = len(labels)
-    end_of_train_samples = int(no_of_samples * dataset_folds)
+    end_of_train_samples = int(len(labels) * trainset_percentage)
 
     train_labels =  np.array(   labels[0:end_of_train_samples]              )
     train_set =     np.array(   data[0:end_of_train_samples], dtype=np.uint8)        
@@ -26,11 +39,28 @@ def extract_data(csv_path, dataset_folds):
 
 
 def convert_to_img(x):
+    """
+    This function converts a sample of the MNIST dataset to a opencv displayable format.
+
+    Args:
+        x:   The input image vector.
+
+    Returns:
+        A numpy 2darray 
+    """
     x = np.array(x)
     one_dim = int(math.sqrt(x.shape[0]))
     return x.reshape((one_dim, one_dim))
 
 def display_img(sample, window_title="Sample", timeout=0):
+    """
+    Displays a given MNIST sample with the help of opencv.
+
+    Args:
+        sample:       the data that shall be visualized (if 1D array it will automatically be converted)
+        window_title: the title of the visualization written on top of it.
+        timeout:      the time when the window auto-closes and continues the program.
+    """
     if len(np.shape(sample)) ==1:
         sample = convert_to_img(sample)
     
@@ -43,6 +73,16 @@ def display_img(sample, window_title="Sample", timeout=0):
     cv2.waitKey(timeout)
 
 def show_data(X, timeout):
+    """
+    Helper function that randomly selects a sample of the database.
+    This function is basically used to visualize a certain feature the get a feeling for its significance.
+
+    Args:
+        X:          the MNIST database as numpy 2darray
+        timeout:    the time when the window auto-closes and continues the program.
+    Returns:
+        [numpy 2D array with training samples, numpy 1D array with training labels, numpy 2D array with testing samples, numpy 2D array with testing labels.]
+    """
     cur_x = random.choice(X)
     digit_img = convert_to_img(cur_x)
     corner_img = processing.corner_signature(digit_img)

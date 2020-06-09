@@ -2,8 +2,15 @@ import os
 import acquisition as acq
 import classifier
 
-def get_config(with_verbose) -> dict:
-    
+def get_config(with_verbose) -> dict:    
+    """
+    Control center for the algorithm.
+
+    Args:
+        with_verbose: set to true if further information should be viewed (e.g. show samples)
+    Returns:
+        Algorithm config as dictionary.
+    """
     config = {}
 
     #paths
