@@ -6,19 +6,23 @@ import pandas as pd
 
 import processing
 
-def extract_data(csv_path=None, trainset_percentage=0.8):
+def extract_data(config=None):
     """
     Extracts the MNIST data and converts it into processible data types. Also splits that database according to the specified percentage.
 
     Args:
-        csv_path:               path to the MNIST database.
-        trainset_percentage:    percentag that defines how many of the first sample shall be used for the trainset, the remaining are used for the testset. No evalset is generated.
+        config: the program's common config
     Raises:
         IOError
         ValueError 
     Returns:
         [numpy 2D array with training samples, numpy 1D array with training labels, numpy 2D array with testing samples, numpy 2D array with testing labels.]
     """
+
+    if config is None:
+        raise ValueError("Missing 'config'. Cannot work without settings.")
+    csv_path = config["paths"]["train"]
+    trainset_percentage = config["algorithm"]["trainset_percentage"]
 
     if csv_path is None:
         raise IOError("No path to MNIST databse specified.")
@@ -38,7 +42,7 @@ def extract_data(csv_path=None, trainset_percentage=0.8):
     return [train_set, train_labels], [test_set, test_labels]
 
 
-def convert_to_img(x):
+def convert_to_img(x=None):
     """
     This function converts a sample of the MNIST dataset to a opencv displayable format.
 
@@ -52,7 +56,7 @@ def convert_to_img(x):
     one_dim = int(math.sqrt(x.shape[0]))
     return x.reshape((one_dim, one_dim))
 
-def display_img(sample, window_title="Sample", timeout=0):
+def display_img(sample=None, window_title="Sample", timeout=0):
     """
     Displays a given MNIST sample with the help of opencv.
 
@@ -68,7 +72,7 @@ def display_img(sample, window_title="Sample", timeout=0):
 
     cv2.namedWindow(window_title, cv2.WINDOW_NORMAL)
     cv2.resizeWindow(window_title, 320,320)
-    cv2.imshow(window_title, sample)
+    cv2.imshow("./"+window_title+".png", sample)
 
     cv2.waitKey(timeout)
 

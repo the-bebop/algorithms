@@ -6,9 +6,10 @@ import processing
 import acquisition
 
 class Classifier:
-    def __init__(self):
+    def __init__(self, seed):
         self.classifier = None
         self.class_samples = None
+        self.seed = None
     
     def get_comparables(self, X=None, y=None):
         """
@@ -82,7 +83,7 @@ class Classifier:
         print("- Start - Training")
         start_time = time()
         x = self.get_comparables(X, y)
-        self.classifier = RandomForestClassifier()
+        self.classifier = RandomForestClassifier(random_state=self.seed)
         X = self.extract_features(X)
         self.classifier.fit(X, y)        
         #TODO replace with logging
@@ -144,7 +145,7 @@ class Classifier:
         print(" ------ estimates ------")
         for row in confusion_matrix:
             for col in row:
-                print(col, "\t\t ", end="")
+                print(col, "\t|\t", end="")
             print(" |")
         print(" -----------------------")
         
@@ -154,11 +155,12 @@ class Classifier:
             TP = confusion_matrix[cur_class, cur_class]
             FP = sum(confusion_matrix[cur_class,:]) - TP
             FN = sum(confusion_matrix[:,cur_class]) - TP
-            TN = sum(confusion_matrix) - TP - FP - FN
+            TN = sum(sum(confusion_matrix)) - TP - FP - FN
             class_results = {"TP": TP, "TN": TN, "FP": FP, "FN": FN}
+            print(class_results)
 
             precision = class_results["TP"]/(class_results["TP"] + class_results["FP"])
-            recall = precision = class_results["TP"]/(class_results["TP"] + class_results["FN"])
+            recall = class_results["TP"]/(class_results["TP"] + class_results["FN"])
             metric_results = {"precision": precision, "recall": recall}
             results["classes"].update({cur_class: {"details": class_results, "metrics": metric_results}})
 
