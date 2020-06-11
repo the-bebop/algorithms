@@ -3,7 +3,7 @@ This is the outcome of an unoptimized test run.
 
 ## Run the algorithm
 
-To reproduce the algorithm simply run main and set the *random_seed* in *get_config()* to *312*.
+To reproduce the algorithm simply run main and set the `random_seed` in `get_config()` to `312`.
 
 ## KPI
 

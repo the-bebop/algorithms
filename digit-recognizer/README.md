@@ -6,7 +6,7 @@ MNIST was used as dataset and need to be downloaded manually to run the program,
 
 ## Results
 
-For the outcome of an unoptimized testrun see samples and KPIs in `/results/evaluation`
+For the outcome of an unoptimized testrun see samples and KPIs in `/results/evaluation/kpi.md`
 
 ### Algorithm
 
