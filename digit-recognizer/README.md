@@ -14,29 +14,20 @@ This testrun simply used one feature per sample (see `classifier.extract_feature
 
 Below is the calculated mean appearance of these:
 
-![Averaged appearance of 0](./results/comparables/0.png){ width=400%, height=400%}
-![Averaged appearance of 0](./results/comparables/1.png){ width=400%, height=400%}
-![Averaged appearance of 0](./results/comparables/2.png){ width=400%, height=400%}
-![Averaged appearance of 0](./results/comparables/3.png){ width=400%, height=400%}
-![Averaged appearance of 0](./results/comparables/4.png){ width=400%, height=400%}
-![Averaged appearance of 0](./results/comparables/5.png){ width=400%, height=400%}
-![Averaged appearance of 0](./results/comparables/6.png){ width=400%, height=400%}
-![Averaged appearance of 0](./results/comparables/7.png){ width=400%, height=400%}
-![Averaged appearance of 0](./results/comparables/8.png){ width=400%, height=400%}
-![Averaged appearance of 0](./results/comparables/9.png){ width=400%, height=400%}
+Below are randomly chosen samples estimated and compared with its ground truth for a better insight. Note the individual amount of samples for this database.
 
-Note the individual amount of samples for this database:
-- class 0:  3069
-- class 1:  3502
-- class 2:  3172
-- class 3:  3243
-- class 4:  3087
-- class 5:  2855
-- class 6:  3095
-- class 7:  3290
-- class 8:  3042
-- class 9:  3145
-
+| Class     | amount of samples |  Visu                                                     |
+|-----------|-------------------|-----------------------------------------------------------|
+| 0         | 3069              | ![Averaged appearance of 0](./results/comparables/0.png)  |
+| 1         | 3502              | ![Averaged appearance of 0](./results/comparables/1.png)  |
+| 2         | 3172              | ![Averaged appearance of 0](./results/comparables/2.png)  |
+| 3         | 3243              | ![Averaged appearance of 0](./results/comparables/3.png)  |
+| 4         | 3087              | ![Averaged appearance of 0](./results/comparables/4.png)  |
+| 5         | 2855              | ![Averaged appearance of 0](./results/comparables/5.png)  |
+| 6         | 3095              | ![Averaged appearance of 0](./results/comparables/6.png)  |
+| 7         | 3290              | ![Averaged appearance of 0](./results/comparables/7.png)  |
+| 8         | 3042              | ![Averaged appearance of 0](./results/comparables/8.png)  |
+| 9         | 3145              | ![Averaged appearance of 0](./results/comparables/9.png)  |
 
 ## Known limits
 

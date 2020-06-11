@@ -26,14 +26,22 @@ See below the *precision* and *recall* metric for each MNIST digit/class.
 
 Below are randomly chosen samples estimated and compared with its ground truth for a better insight
 
-![estimate '0' ground truth '0'](./estimated_as_0_gt-label_0.png){ width=400%, height=400%}
-![estimate '1' ground truth '1'](./estimated_as_1_gt-label_1.png){ width=400%, height=400%}
-![estimate '3' ground truth '3'](./estimated_as_3_gt-label_3.png){ width=400%, height=400%}
-![estimate '4' ground truth '4'](./estimated_as_4_gt-label_4.png){ width=400%, height=400%}
-![estimate '4' ground truth '9'](./estimated_as_4_gt-label_9.png){ width=400%, height=400%}
-![estimate '5' ground truth '5'](./estimated_as_5_gt-label_5.png){ width=400%, height=400%}
-![estimate '5' ground truth '8'](./estimated_as_5_gt-label_8.png){ width=400%, height=400%}
-![estimate '7' ground truth '7'](./estimated_as_7_gt-label_7.png){ width=400%, height=400%}
+| Estimate  | Ground Truth  | Visu                                                              |
+|-----------|---------------|-------------------------------------------------------------------|
+| 0         | 0             | ![estimate '0' ground truth '0'](./estimated_as_0_gt-label_0.png) |
+| 1         | 1             | ![estimate '1' ground truth '1'](./estimated_as_1_gt-label_1.png) |
+| 3         | 3             | ![estimate '3' ground truth '3'](./estimated_as_3_gt-label_3.png) |
+| 4         | 4             | ![estimate '4' ground truth '4'](./estimated_as_4_gt-label_4.png) |
+| 4         | 9             | ![estimate '4' ground truth '9'](./estimated_as_4_gt-label_9.png) |
+| 5         | 5             | ![estimate '5' ground truth '5'](./estimated_as_5_gt-label_5.png) |
+| 5         | 8             | ![estimate '5' ground truth '8'](./estimated_as_5_gt-label_8.png) |
+| 7         | 7             | ![estimate '7' ground truth '7'](./estimated_as_7_gt-label_7.png) |
+
+
+
+
+
+
 
 
 
